@@ -32,16 +32,20 @@ oauth.register(
 nav = navbar.nav_bar()
 
 app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
+    dcc.Location(id='url', pathname="/login"),
     nav,
     html.Div(id='page-content'),
 ])
 
-@app.server.route("/")
-def home_page():
+# @app.server.route("/")
+# def home_page():
+#     print(session["user"])
+#     if not session or not session["user"]:
+#         return app.server.redirect("/")
+
+@app.server.route("/home")
+def home():
     print(session["user"])
-    if not session or not session["user"]:
-        return app.server.redirect("/")
 
 @app.server.route("/callback", methods=["GET", "POST"])
 def callback():
@@ -52,9 +56,8 @@ def callback():
 @app.server.route("/login")
 def login():
     return oauth.auth0.authorize_redirect(
-        redirect_uri=app.server.url_for("callback", _external=True)
+        redirect_uri="https://danrhul-super-duper-succotash-6p9q4pjv47x3qp5-8050.preview.app.github.dev/callback"
     )
-
 
 @app.server.route("/logout")
 def logout():
@@ -64,7 +67,7 @@ def logout():
         + "/v2/logout?"
         + urlencode(
             {
-                "returnTo": app.server.url_for("/", _external=True),
+                "returnTo": "https://danrhul-super-duper-succotash-6p9q4pjv47x3qp5-8050.preview.app.github.dev/home",
                 "client_id": env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus,
@@ -74,4 +77,4 @@ if __name__ == '__main__':
     from sys import argv
     RUN_AS_DEBUG = "debug" in argv
 
-    app.run_server(debug=RUN_AS_DEBUG, port=3000)
+    app.run_server(debug=RUN_AS_DEBUG)
