@@ -11,6 +11,8 @@ from app import app
 from pages import home
 from components import navbar
 
+from constant import HOSTNAME
+
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -56,7 +58,7 @@ def callback():
 @app.server.route("/login")
 def login():
     return oauth.auth0.authorize_redirect(
-        redirect_uri="https://danrhul-super-duper-succotash-6p9q4pjv47x3qp5-8050.preview.app.github.dev/callback"
+        redirect_uri=f"{HOSTNAME}/callback"
     )
 
 @app.server.route("/logout")
@@ -67,7 +69,7 @@ def logout():
         + "/v2/logout?"
         + urlencode(
             {
-                "returnTo": "https://danrhul-super-duper-succotash-6p9q4pjv47x3qp5-8050.preview.app.github.dev/home",
+                "returnTo": f"{HOSTNAME}/home",
                 "client_id": env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus,
