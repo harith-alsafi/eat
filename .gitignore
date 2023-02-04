@@ -1,1 +1,6 @@
 run.sh
+.env
+.pyc
+*.iml
+.directory
+.idea
