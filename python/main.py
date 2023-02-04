@@ -39,29 +39,17 @@ app.layout = html.Div([
 
 @app.server.route("/home")
 def home():
-    with open
-
-# @app.callback(
-#         Output("nav-bar", "children"),
-#         Input("url", "pathname"),
-# )
-# def nav_bar(pathname):
-#     print("nav_bar path")
-#     return navbar.nav_bar()
-
-# @app.callback(
-#         Output("page-content", "children"),
-#         Input("url", "pathname"),
-# )
-# def home(pathname):
-#     print("home path")
-#     return home_page.build()
+    if "user" not in session:
+        return app.server.redirect("/login")
+    else:
+        print(session["user"])
+        return "bob"
 
 @app.server.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user"] = token
-    return app.server.redirect("/")
+    return app.server.redirect("/home")
 
 @app.server.route("/login")
 def login():
@@ -87,4 +75,5 @@ if __name__ == '__main__':
     from sys import argv
     RUN_AS_DEBUG = "debug" in argv
 
-    app.run_server(debug=RUN_AS_DEBUG)
+    app.run_server(debug=RUN_AS_DEBUG, port=3000)
+    #app.run_server(debug=RUN_AS_DEBUG)
