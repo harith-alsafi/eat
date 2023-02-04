@@ -3,4 +3,4 @@ Authlib
 twilio
 numpy
 pandas
-dash-auth0-oauth
+dash_bootstrap_components
