@@ -5,6 +5,7 @@ from urllib.parse import quote_plus, urlencode
 
 from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
+from flask import session
 
 from app import app
 from pages import home
@@ -38,14 +39,15 @@ app.layout = html.Div([
 
 @app.server.route("/")
 def home_page():
-    print("home")
+    print(session["user"])
+    if not session or not session["user"]:
+        return app.server.redirect("/")
 
 @app.server.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    app.server.session["user"] = token
+    session["user"] = token
     return app.server.redirect("/")
-
 
 @app.server.route("/login")
 def login():
@@ -56,13 +58,13 @@ def login():
 
 @app.server.route("/logout")
 def logout():
-    app.server.session.clear()
+    session.clear()
     app.server.redirect("https://"
         + env.get("AUTH0_DOMAIN")
         + "/v2/logout?"
         + urlencode(
             {
-                "returnTo": app.server.url_for("home", _external=True),
+                "returnTo": app.server.url_for("/", _external=True),
                 "client_id": env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus,
@@ -72,4 +74,4 @@ if __name__ == '__main__':
     from sys import argv
     RUN_AS_DEBUG = "debug" in argv
 
-    app.run_server(debug=RUN_AS_DEBUG)
+    app.run_server(debug=RUN_AS_DEBUG, port=3000)
