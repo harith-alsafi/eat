@@ -6,5 +6,6 @@ app = dash.Dash(
     APP_NAME, 
     external_stylesheets=[
         dbc.themes.BOOTSTRAP,
+        dbc.icons.BOOTSTRAP,
     ],
 )
