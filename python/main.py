@@ -47,13 +47,17 @@ app.layout = html.Div([
 
 @app.server.route("/home")
 def home():
-    print(session["user"])
+    if "user" not in session:
+        return app.server.redirect("/login")
+    else:
+        print(session["user"])
+        return "bob"
 
 @app.server.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user"] = token
-    return app.server.redirect("/")
+    return app.server.redirect("/home")
 
 @app.server.route("/login")
 def login():
@@ -64,7 +68,7 @@ def login():
 @app.server.route("/logout")
 def logout():
     session.clear()
-    app.server.redirect("https://"
+    return app.server.redirect("https://"
         + env.get("AUTH0_DOMAIN")
         + "/v2/logout?"
         + urlencode(
@@ -79,4 +83,5 @@ if __name__ == '__main__':
     from sys import argv
     RUN_AS_DEBUG = "debug" in argv
 
-    app.run_server(debug=RUN_AS_DEBUG)
+    app.run_server(debug=RUN_AS_DEBUG, port=3000)
+    #app.run_server(debug=RUN_AS_DEBUG)
