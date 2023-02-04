@@ -8,8 +8,8 @@ from dotenv import find_dotenv, load_dotenv
 from flask import session
 
 from app import app
-from pages import home
 from components import navbar
+from pages import home as home_page
 
 from constant import HOSTNAME
 
@@ -31,23 +31,31 @@ oauth.register(
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
 )
 
-nav = navbar.nav_bar()
-
 app.layout = html.Div([
-    dcc.Location(id='url', pathname="/login"),
-    nav,
+    dcc.Location(id='url'),
+    html.Div(id="nav-bar"),
     html.Div(id='page-content'),
 ])
 
-# @app.server.route("/")
-# def home_page():
-#     print(session["user"])
-#     if not session or not session["user"]:
-#         return app.server.redirect("/")
-
 @app.server.route("/home")
 def home():
-    print(session["user"])
+    with open
+
+# @app.callback(
+#         Output("nav-bar", "children"),
+#         Input("url", "pathname"),
+# )
+# def nav_bar(pathname):
+#     print("nav_bar path")
+#     return navbar.nav_bar()
+
+# @app.callback(
+#         Output("page-content", "children"),
+#         Input("url", "pathname"),
+# )
+# def home(pathname):
+#     print("home path")
+#     return home_page.build()
 
 @app.server.route("/callback", methods=["GET", "POST"])
 def callback():
@@ -64,7 +72,7 @@ def login():
 @app.server.route("/logout")
 def logout():
     session.clear()
-    app.server.redirect("https://"
+    return app.server.redirect("https://"
         + env.get("AUTH0_DOMAIN")
         + "/v2/logout?"
         + urlencode(
