@@ -37,8 +37,8 @@ app.layout = html.Div([
     dcc.Location(id='url'),
     html.Div(id="nav-bar"),
     navbar.navbar,
-    overview.Get_overview(),
-    # details.Get_Details(),
+    # overview.Get_overview(),
+    details.Get_Details(),
     html.Div(id='page-content'),
 ])
 
