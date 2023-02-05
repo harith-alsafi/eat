@@ -9,8 +9,10 @@ from flask import session
 
 from app import app
 from components import navbar
+from components import table
 from pages import home as home_page
-
+from components import overview
+from components import details
 from constant import HOSTNAME
 
 
@@ -34,6 +36,9 @@ oauth.register(
 app.layout = html.Div([
     dcc.Location(id='url'),
     html.Div(id="nav-bar"),
+    navbar.navbar,
+    overview.Get_overview(),
+    # details.Get_Details(),
     html.Div(id='page-content'),
 ])
 
@@ -43,7 +48,7 @@ def home():
         return app.server.redirect("/login")
     else:
         print(session["user"])
-        return "bob"
+        return ""
 
 @app.server.route("/callback", methods=["GET", "POST"])
 def callback():
