@@ -4,7 +4,7 @@ import plotly.express as px
 import numpy
 from dash.dependencies import Input, Output
 from app import app
-# import table
+from . import table
 
 def Get_Details():
 

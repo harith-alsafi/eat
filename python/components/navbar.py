@@ -57,36 +57,3 @@ navbar = dbc.Navbar(
     color="dark",
     dark=True,
 )
-
-# add callback for toggling the collapse on small screens
-@app.callback(
-    Output("navbar-collapse", "is_open"),
-    [Input("navbar-toggler", "n_clicks")],
-    [State("navbar-collapse", "is_open")],
-)
-def toggle_navbar_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
-    # print("build navbar")
-    # return dbc.Navbar(
-    #         dbc.Row(
-    #             # dbc.Col(
-    #             [
-    #                 # dbc.Label(
-    #                 #     html.I(className="bi bi-1-square-fill"),
-    #                 #     className="g-0",
-    #                 #     # href="/home",
-    #                 # ),
-          
-    #                         dbc.Col(dbc.Label("Overview", align="start"), width={"size": 3, "order": 1}),
-    #                         dbc.Col(dbc.Label(" | ", align="center"), width={"size": 3, "order": 2}),
-    #                         dbc.Col(dbc.Label("Detailed", align="end"), width={"size": 3, "order": 4, "offset": 1}),
-              
-    #                         dbc.Col(dbc.Label(html.I(className="bi bi-person-circle")), width={"size": 3, "order": 5, "offset": 1}),
-    #                         dbc.Col(dbc.Label(html.I(className="bi bi-gear")), width={"size": 3, "order": 6, "offset": 1})
-                 
-    #             ],
-    #             # )
-    #         ),
-    #     )

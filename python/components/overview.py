@@ -4,17 +4,36 @@ import plotly.express as px
 import numpy
 from dash.dependencies import Input, Output
 from app import app
+from dash_iconify import DashIconify
 
 
 def Get_Card(title, numberChange, percentChange, period, expectedPercent):
+    periodText = f"{period} month"
+    if period != 1:
+        periodText = f"{periodText}s"
+
+    percentChangeColour = "text-success" if percentChange > 0 else "text-danger"
+    expectedPercentColour = "text-success" if expectedPercent > 0 else "text-danger"
+
     return dbc.Card([
         dbc.CardBody(
             [
-                html.H2(title, className="card-title"),
-                html.P(str(numberChange), className="card-text-change"),
-                html.P(str(percentChange)+"%", className="card-text-change-percent"),
-                html.P(str(period), className="card-text-period"),
-                html.P(str(expectedPercent)+"%", className="card-text-expected"),
+                html.H5(title, className="card-title text-secondary"),
+
+                html.H3(f"${numberChange:,.2f}", className="card-text-change d-flex justify-content-center"),
+                # dbc.Row([
+                #     dbc.Col(html.H3(f"${numberChange:,.2f}", className="card-text-change d-flex justify-content-center")),
+                #     dbc.Col(DashIconify(
+                #         icon=("material-symbols:arrow-drop-up" if percentChange > 0 else "material-symbols:arrow-drop-down"),
+                #         color=("green" if percentChange > 0 else "red"),
+                #         height=30,
+                #         width=30
+                #     ))
+                # ], align="center"),
+
+                html.P(f"{percentChange/100:.0%}", className=f"card-text-change-percent d-flex justify-content-center {percentChangeColour}"),
+                html.P(periodText, className="card-text-period d-flex justify-content-center text-secondary"),
+                html.P(f"{expectedPercent/100:.0%} expected next month", className=f"card-text-expected d-flex justify-content-center {expectedPercentColour}"),
             ]
         ),
     ],
