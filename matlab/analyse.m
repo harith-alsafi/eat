@@ -28,10 +28,6 @@ function []=analyse(inputFile, outputFile)
   Averages = zeros(length(FieldNames), 1);
   Std = zeros(length(FieldNames), 1);
   
-  % data prediction 
-  predicted = table();
-  
-  
   % extracting calculations 
   for i=1:length(FiledNames)
       array = inputTable.(FieldNames(i));
@@ -39,12 +35,11 @@ function []=analyse(inputFile, outputFile)
       MaxValues(i) = max(array);
       [Q1Values(i), Q2Values(i), Q3Values(i)] = prctile(array, [25, 50, 75]);
       Averages(i) = mean(array);
-      Std(i) = std(array);
-      
+   dbc.Row([
+            dbc.Col(),
+            dbc.Col(table.old_table_view),
+        ], style={"height":"44vh", 'margin': 10 }, class_name="display: flex; flex-grow: 1;")      Std(i) = std(array);    
   end
-  
-  % creating expected data 
-  
   
   % writing data 
   
