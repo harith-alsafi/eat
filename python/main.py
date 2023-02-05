@@ -11,8 +11,7 @@ from app import app
 from components import navbar
 from components import table
 from pages import home as home_page
-from components import overview
-from components import details
+from components import overview, details, floatingbutton
 from constant import HOSTNAME
 
 
@@ -37,8 +36,8 @@ app.layout = html.Div([
     dcc.Location(id='url'),
     html.Div(id="nav-bar"),
     navbar.navbar,
-    # overview.Get_overview(),
-    details.Get_Details(),
+    # details.Get_Details(),
+    floatingbutton.button,
     html.Div(id='page-content'),
 ])
 
