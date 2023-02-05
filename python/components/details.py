@@ -46,7 +46,10 @@ def Get_TimeLine():
     df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
 
     # Plot 
-    fig = px.line(df, x='Date', y='AAPL.High', height=380)
+    fig = px.line(df, x='Date', y='AAPL.High', height=380, title="Emission")
+    fig.update_layout(
+    yaxis_title="CO2 metric tonne",
+)
 
     # Only thing I figured is - I could do this 
     fig.add_scatter(x=df['Date'], y=df['AAPL.Low'], mode='lines')
@@ -55,6 +58,9 @@ def Get_TimeLine():
 def Get_3d():
     df = px.data.gapminder().query("continent=='Europe'")
     fig = px.line_3d(df, x="gdpPercap", y="pop", z="year", color='country', height=380)
+    fig.update_layout(
+        title="Emissions",
+        )
     return fig
 
 def Get_map():

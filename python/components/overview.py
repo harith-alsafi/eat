@@ -20,7 +20,7 @@ def Get_Card(title, numberChange, percentChange, period, expectedPercent):
             [
                 html.H5(title, className="card-title text-secondary"),
 
-                html.H3(f"${numberChange:,.2f}", className="card-text-change d-flex justify-content-center"),
+                html.H3(numberChange, className="card-text-change d-flex justify-content-center"),
                 # dbc.Row([
                 #     dbc.Col(html.H3(f"${numberChange:,.2f}", className="card-text-change d-flex justify-content-center")),
                 #     dbc.Col(DashIconify(
@@ -32,7 +32,7 @@ def Get_Card(title, numberChange, percentChange, period, expectedPercent):
                 # ], align="center"),
 
                 html.P(f"{percentChange/100:.0%}", className=f"card-text-change-percent d-flex justify-content-center {percentChangeColour}"),
-                html.P(periodText, className="card-text-period d-flex justify-content-center text-secondary"),
+                html.P(f"from last {periodText}", className="card-text-period d-flex justify-content-center text-secondary"),
                 html.P(f"{expectedPercent/100:.0%} expected next month", className=f"card-text-expected d-flex justify-content-center {expectedPercentColour}"),
             ]
         ),
@@ -45,13 +45,13 @@ def Get_overview():
     return dbc.Col(
         [
         dbc.Row([
-            dbc.Col(Get_Card("1Profit", 23403, 2.5, 1, 3.2)),
-            dbc.Col(Get_Card("2Profit", 23403, 2.5, 1, 3.2)),
-            dbc.Col(Get_Card("3Profit", 23403, 2.5, 1, 3.2)),
+            dbc.Col(Get_Card("Profit", "24037$", 25, 1, 32)),
+            dbc.Col(Get_Card("EC/Revenue", 0.45, 2.5, 1, -1.2)),
+            dbc.Col(Get_Card("Carbon Credit", 103, 2.5, 1, -3.2)),
         ], style={"height":"44vh",'margin': 10 }),
         dbc.Row([
             dbc.Col(dbc.Card(dbc.CardBody(dbc.Row(dcc.Graph(figure=generate_chart()) , align = "center"))), width="8", align="center"),
-            dbc.Col(Get_Card("5Profit", 23403, 2.5, 1, 3.2), width="4"),
+            dbc.Col(Get_Card("Carbon Emission", "23403 tonnes", 2.5, 1, 3.2), width="4"),
         ], style={"height":"44vh", 'margin': 10 }, class_name="display: flex; flex-grow: 1;")
         ],
         width="100%",
@@ -60,7 +60,7 @@ def Get_overview():
 
 
 def generate_chart():
-    random_x = [100, 2000, 550]
-    names = ['A', 'B', 'C']
+    random_x = [100, 2000, 550, 100, 1233]
+    names = ['Enviromental costs', 'Workforce costs', 'Logistics costs', 'Other costs', 'Profits']
     fig = px.pie(values=random_x, names=names, height=400, width=1000)
     return fig
