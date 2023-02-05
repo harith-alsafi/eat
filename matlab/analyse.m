@@ -11,15 +11,15 @@ function []=analyse(inputFile, outputFile)
   inputTable.TotalCost_Revenue = zeros(height(inputTable), 1);
   
   for i=1:height(inputTable)
-    inputTable(i, "TotalCost") = inputTable(i, "EnviroemntalCosts") + inputTable(i, "LogisticsCosts") + inputTable(i, "WorkforceCosts")  + inputTable(i, "OtherCosts");
-    inputTable(i, "Profit") =  inputTable(i, "Revenue") + inputTable(i, "TotalCost");
-    inputTable(i, "Ec_Revenue") = inputTable(i, "EnviroemntalCosts") / inputTable(i, "Revenue");
-    inputTable(i, "Profit_Revenue") = inputTable(i, "Profit") / inputTable(i, "Revenue");
-    inputTable(i, "TotalCost_Revenue") = inputTable(i, "TotalCost") / inputTable(i, "Revenue");
+    inputTable.("TotalCost")(i) = inputTable.("EnviroemntalCosts")(i) + inputTable.("LogisticsCosts")(i) + inputTable.("WorkforceCosts")(i)  + inputTable.("OtherCosts")(i);
+    inputTable.("Profit")(i) =  inputTable.("Revenue")(i) + inputTable.("TotalCost")(i);
+    inputTable.("Ec_Revenue")(i) = inputTable.("EnviroemntalCosts")(i) / inputTable.("Revenue")(i);
+    inputTable.("Profit_Revenue")(i) = inputTable.("Profit")(i) / inputTable.("Revenue")(i);
+    inputTable.("TotalCost_Revenue")(i) = inputTable.("TotalCost")(i) / inputTable.("Revenue")(i);
   end 
   
   % create variables 
-  FieldNames = inputTable.Properties.VariableNames;
+  FieldNames = string(inputTable.Properties.VariableNames(2:length(inputTable.Properties.VariableNames)))';
   MinValues = zeros(length(FieldNames), 1);
   Q1Values = zeros(length(FieldNames), 1);
   Q2Values = zeros(length(FieldNames), 1);
@@ -29,18 +29,19 @@ function []=analyse(inputFile, outputFile)
   Std = zeros(length(FieldNames), 1);
   
   % extracting calculations 
-  for i=1:length(FiledNames)
-      array = inputTable.(FieldNames(i));
-      MinValues(i) = min(array);
-      MaxValues(i) = max(array);
-      [Q1Values(i), Q2Values(i), Q3Values(i)] = prctile(array, [25, 50, 75]);
-      Averages(i) = mean(array);
-   dbc.Row([
-            dbc.Col(),
-            dbc.Col(table.old_table_view),
-        ], style={"height":"44vh", 'margin': 10 }, class_name="display: flex; flex-grow: 1;")      Std(i) = std(array);    
+  for i=1:length(FieldNames)
+      MinValues(i) = min(inputTable.(string(FieldNames(i))));
+      MaxValues(i) = max(inputTable.(string(FieldNames(i))));
+      qr = prctile(inputTable.(string(FieldNames(i))), [25, 50, 75]);
+      Q1Values(i) = qr(1);
+      Q2Values(i) = qr(2);
+      Q3Values(i) = qr(3);
+      Averages(i) = mean(inputTable.(string(FieldNames(i))));
+      Std(i) = std(inputTable.(string(FieldNames(i))));    
   end
   
-  % writing data 
+  finalTable = array2table([FieldNames, MinValues, MaxValues, Q1Values, Q2Values, Q3Values, Averages, Std],'VariableNames',{'FieldNames','MinValues','MaxValues','Q1Values', 'Q2Values', 'Q3Values', 'Averages', 'Std'});
   
+  % writing data 
+  writetable(finalTable, outputFile+".csv",'Delimiter',',');
 end
