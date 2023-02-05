@@ -28,9 +28,7 @@ function []=analyse(inputFile, outputFile)
   Averages = zeros(length(FieldNames), 1);
   Std = zeros(length(FieldNames), 1);
   
-  % data prediction 
   predicted = table();
-  
   
   % extracting calculations 
   for i=1:length(FiledNames)
